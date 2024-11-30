@@ -1,3 +1,42 @@
+# Brief:
+
+The assignment contains two equally weighted parts. You must submit your work as a report describing the work that you have done in Microsoft Word (.docx) format. The submission should answer both questions and may be generated either from R Markdown or manually. Additionally, you must also submit the code that was used in your analysis, either an .RMD file if that is used to generate the word document or in the format of .R if the report is prepared separately from the analysis.
+
+Part 1: Using the US seasonally-adjusted personal consumption expenditures (PCE.csv) compare the predictive ability of the following three models:
+
+1)	One of the four simple forecasting methods (average, naïve, seasonal naïve, or drift)
+2)	An Exponential smoothing model
+3)	An ARIMA model
+
+Your goal is to identify the best performing model. 
+
+In you report you should clearly present and discuss the following: 
+
+•	Describe the steps and decisions made for your analysis (missing data, dataset split etc.).
+•	Present and interpret the criteria and the results for the selection of the best model.
+•	Plot the prediction of the models against the real values in one graph.
+•	Based on your findings make an estimation of the personal consumption expenditures for the October of 2024.
+•	Repeat and present only the models’ comparison using this time one-step ahead rolling forecasting without re-estimation of the parameters. 
+
+Part 2: The file HotelData.csv contains customer online reviews for hotels and their corresponding ratings (Likert scale from 1/low to 5/high satisfaction). Randomly, select a sample of 2,000 reviews as follows:
+
+Use the sample_n() function from  dplyr package, but to ensure reproducibility use the function set.seed(XXX) before you use the sample_n() function where XXX should be the last 3 digits of your student ID. For example, if your student ID is 2017XX123 then your code could have the following form:
+
+set.seed(123)
+test<-sample_n(reviews, 2000)
+
+Based on the new sample you are asked to perform topic modelling to identify (separately) the factors (topics) that are discussed in the positive and negative reviews. 
+
+In your report you should clearly address and report the following: 
+•	Explain the criterion used to classify positive and negative reviews. 
+•	Describe all the steps that are followed for your analysis (for example, tokenization, removal of stop words, etc.).
+•	Present the criteria for the selection of the number of topics.
+•	Identify and label the topics.
+•	Discuss the three top factors that affect the satisfaction of the customers.
+•	Discuss the three top factors that affect the dissatisfaction of the customers.
+
+# REPORT
+
 # Part 1
 The given data contains information about the monthly personal consumption expenditures (PCE) in the US from January 1959 to November 2023. This section of the report seeks to identify the best performing forecasting model for the given data as it helps in providing insights on the economic trend and anticipated fluctuations. The report will tackle following objectives:
 •	Compare the forecasting ability of simple forecasting model, exponential smoothing model and ARIMA model and suggest the best model based on the results.
