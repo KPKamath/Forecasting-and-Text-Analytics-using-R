@@ -190,3 +190,262 @@ Figure 2.10: Probability of occurrence of topics for negative reviews
 
 From the figure above it can be observed that the top three topics that lead to customer dissatisfaction are topic 18, 14 and 12. From Table 2 it can be inferred that dissatisfaction stems from accessibility of the hotel, customer’s arrival experience at the hotel and overall experience with the hotel offers respectively.
 By the means of text analysis and using topic modelling on the data containing online reviews provided by the customers, insights can be drawn on the factors influencing the satisfaction or dissatisfaction. By working on factors like customer arrival experience and improving other services offered, the dissatisfaction of the customers can be reduced. Maintaining good staff service can further enhance the overall experience of the customer.
+
+# R File
+
+## PART 1
+
+install.packages("imputeTS")
+install.packages("forecast")
+library(imputeTS)
+library(forecast)
+
+data<- read.csv('PCE.csv', header=TRUE)
+sum(is.na(data)) #check for missing data
+pce_data<- ts(data$PCE,start=c(1959, 1), end=c(2023, 11), frequency=12)
+
+pce_dataset<-na_interpolation(pce_data)
+plot(pce_dataset)
+seasonplot(pce_dataset) 
+
+pce_decompose<- decompose(pce_dataset, type="additive")
+plot(pce_decompose) #there is a trend
+
+lines(pce_decompose$trend, col=2)
+lines(pce_decompose$seasonal, col=4)
+
+#splitting the data set into 80-20
+trainset_pce <- subset(pce_dataset, end = length(pce_dataset) - 156)
+
+options(max.print = 1500)
+options(max.print = getOption("max.print"))
+
+#NAIVE forecast
+predict_naive <- naive(trainset_pce, h = 156) #naive forecast
+predict_naive
+plot(predict_naive)
+
+
+#exponential forecast
+fce_holt <- holt(trainset_pce, h=156)
+fce_holt
+plot(fce_holt)
+
+#ARIMA
+tsdisplay(pce_dataset)
+arfit_pce <- auto.arima(trainset_pce)
+fc_arima<- forecast(arfit_pce, h=156)
+fc_arima
+plot(forecast(arfit_pce, h=156))
+checkresiduals(arfit_pce)
+
+#Check accuracy of all models
+accuracy(predict_naive,pce_dataset)
+accuracy(fce_holt,pce_dataset)
+accuracy(fc_arima,pce_dataset)
+
+
+#Plot all three
+autoplot(pce_dataset) + autolayer(fce_holt$mean) + autolayer(predict_naive$mean) + autolayer(fc_arima$mean)
+
+holtmodel_pce <- holt(trainset_pce,h=167) 
+holtmodel_pce
+plot(holtmodel_pce)
+
+
+#Rolling forecast
+rf_holt <- tsCV(pce_dataset, holt, h = 1, window=623)
+rf_holt[1:779]
+
+rf_naive <- tsCV(pce_dataset, naive, h = 1, window=623)
+rf_naive[1:779]
+
+rf <- function(x, h){forecast(auto.arima(x), h=h)}
+rf_arima <- tsCV(pce_dataset, rf, h=1, window=623)
+rf_arima[1:779]
+
+
+train_ar <- window(pce_dataset,end=2010.99)
+fit_ar <- auto.arima(train_ar)
+refit_ar <- Arima(pce_dataset, model=fit_ar)
+fc_ar <- window(fitted(refit_ar), start=2011)
+accuracy(fc_ar,pce_dataset)
+
+train_holt <- window(pce_dataset,end=2010.99)
+fit_holt <- holt(train_holt)
+refit_holt <- holt(pce_dataset, model=fit_holt)
+fc_holt <- window(fitted(refit_holt), start=2011)
+accuracy(fc_holt,pce_dataset)
+
+train_naive <- window(pce_dataset,end=2010.99)
+fit_naive <- naive(train_naive)
+refit_naive <- naive(pce_dataset, model=fit_naive)
+fc_naive <- window(fitted(refit_naive), start=2011)
+accuracy(fc_naive,pce_dataset)
+
+autoplot(pce_dataset) + autolayer(fc_holt) + autolayer(fc_naive) + autolayer(fc_ar)
+
+
+
+
+
+## PART 2
+
+install.packages('stringr')
+install.packages('RColorBrewer')
+install.packages('topicmodels')
+install.packages('ggplot2')
+install.packages('LDAvis')
+install.packages('servr')
+install.packages('textcat')
+install.packages('ldatuning')
+install.packages('wordcloud')
+
+library(dplyr) # basic data manipulation
+
+library(tm) # package for text mining package
+library(stringr) # package for dealing with strings
+library(RColorBrewer)# package to get special theme color
+library(wordcloud) # package to create wordcloud
+
+library(topicmodels) # package for topic modelling
+
+library(ggplot2) # basic data visualization
+library(LDAvis) # LDA specific visualization 
+library(servr) # interactive support for LDA visualization
+library(textcat)
+library(ldatuning)
+
+set.seed(129)
+
+data <- read.csv(file = "HotelsData.csv", header = TRUE)
+data$lang <- sapply(data$Text.1, textcat)
+write.csv(data, "data_lang.csv")
+rev_english <- data %>%
+  filter(data$lang == "english")
+colnames(rev_english)
+test <- sample_n(rev_english,2000)
+
+#Split into positive and negative reviews
+positive_review <- test[test$Review.score >= 4, ]
+negative_review <- test[test$Review.score <= 3, ]
+
+#FUNCTION BEGINS HERE
+main_function <- function(reviews) {
+  docs_main <- stringr::str_conv(reviews$Text.1, "UTF-8")
+
+  reviews_main <- Corpus(VectorSource(docs_main))
+  
+  dtmrev_main <- DocumentTermMatrix(reviews_main,
+                                      control = list(lemma=TRUE,removePunctuation = TRUE,
+                                                     removeNumbers = TRUE, stopwords = TRUE,
+                                                     tolower = TRUE))
+  
+  
+  row.sum=apply(dtmrev_main,1,FUN=sum)
+  dtmdocs_main=dtmrev_main[row.sum!=0,]
+  
+  
+  dtmnew_main <- as.matrix(dtmdocs_main)
+  main_f <- colSums(dtmnew_main)
+  main_f <- sort(main_f, decreasing=TRUE)
+  doclen_main <- rowSums(dtmnew_main)
+  main_f[1:20]
+  
+  words_main<- names(main_f)
+  wordcloud(words_main[1:70], main_f[1:70], rot.per=0.15, 
+            random.order = FALSE, scale=c(4,0.5),
+            random.color = FALSE, colors=brewer.pal(8,"Dark2"))
+  
+  
+  result_main <- FindTopicsNumber(
+    dtmnew_main,
+    topics = seq(from = 5, to = 20, by = 1),
+    metrics = c("Griffiths2004", "CaoJuan2009", "Arun2010"),
+    method = "Gibbs",
+    control = list(seed = 129),
+    mc.cores = 2L,
+    verbose = TRUE
+  )
+  
+  
+  FindTopicsNumber_plot(result_main)
+ df_main<- data.frame(dtmdocs_main=dtmdocs_main,doclen_main=doclen_main,main_f=main_f)
+  return(df_main)
+}
+
+#Call the function
+result_positive<- main_function(positive_review)
+result_negative <- main_function(negative_review)
+
+
+#Finding topics for POSITIVE REVIEWS
+ldaOut_positive <-LDA(result_positive$dtmdocs_main,18, method="Gibbs", 
+                 control=list(iter=1000,seed=1000))
+phi_postive <- posterior(ldaOut_positive)$terms %>% as.matrix 
+theta_positive <- posterior(ldaOut_positive)$topics %>% as.matrix 
+
+ldaOut.positive <- as.matrix(terms(ldaOut_positive, 10))
+ldaOut.positive
+
+ldaOut.topics_pos <- data.frame(topics(ldaOut_positive))
+ldaOut.topics_pos$index <- as.numeric(row.names(ldaOut.topics_pos))
+positive_review$index <- as.numeric(row.names(positive_review))
+datawithtopic_pos <- merge(positive_review, ldaOut.topics_pos, by='index',all.x=TRUE)
+datawithtopic_pos <- datawithtopic_pos[order(datawithtopic_pos$index), ]
+datawithtopic_pos[,]
+
+probability_positive <- as.data.frame(ldaOut_positive@gamma)
+probability_positive[0:10,1:18]
+
+
+#Finding topics for NEGATIVE REVIEWS
+ldaOut_negative <-LDA(result_negative$dtmdocs_main,19, method="Gibbs", 
+                 control=list(iter=1000,seed=1000))
+phi_negative <- posterior(ldaOut_negative)$terms %>% as.matrix 
+theta_negative <- posterior(ldaOut_negative)$topics %>% as.matrix 
+
+ldaOut.negative <- as.matrix(terms(ldaOut_negative, 10))
+ldaOut.negative
+
+ldaOut.topics_neg <- data.frame(topics(ldaOut_negative))
+ldaOut.topics_neg$index <- as.numeric(row.names(ldaOut.topics_neg))
+negative_review$index <- as.numeric(row.names(negative_review))
+datawithtopic_neg <- merge(negative_review, ldaOut.topics_neg, by='index',all.x=TRUE)
+datawithtopic_neg <- datawithtopic_neg[order(datawithtopic_neg$index), ]
+datawithtopic_neg[,]
+
+probability_negative <- as.data.frame(ldaOut_negative@gamma)
+probability_negative[0:10,1:19]
+
+#Function for topic prevalence
+#Topic prevalence 
+function_prev<- function(theta){
+  num_doc<- nrow(theta)
+  num_topic<- ncol(theta)
+  topic_prev<- colSums(theta)/num_doc
+  sort_prev<- sort(topic_prev, decreasing = TRUE)}
+
+positive_prevalence<- function_prev(theta_positive)
+positive_prevalence
+
+negative_prevalence<- function_prev(theta_negative)
+negative_prevalence
+
+
+#Function for LDAvis
+create_ldavis <- function(phi, theta, doc_length, frequency, out_dir = 'vis') {
+  vocab <- colnames(phi)
+  json_lda <- createJSON(phi = phi, theta = theta, 
+                         vocab = vocab, doc.length = doc_length, 
+                         term.frequency = frequency)
+  serVis(json_lda, out.dir = out_dir, open.browser = TRUE)
+}
+
+
+#Visualizing with LDAVis
+LDAvis_positive <- create_ldavis(phi_positive,theta_positive,result_positive$doclen_main,result_positive$main_f,out_dir = 'vis')
+LDAvis_negative<- create_ldavis(phi_negative,theta_negative,result_negative$doclen_main,result_negative$main_f,out_dir = 'vis')
+
+
+
