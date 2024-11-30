@@ -1,7 +1,5 @@
 # Brief:
 
-The assignment contains two equally weighted parts. You must submit your work as a report describing the work that you have done in Microsoft Word (.docx) format. The submission should answer both questions and may be generated either from R Markdown or manually. Additionally, you must also submit the code that was used in your analysis, either an .RMD file if that is used to generate the word document or in the format of .R if the report is prepared separately from the analysis.
-
 Part 1: Using the US seasonally-adjusted personal consumption expenditures (PCE.csv) compare the predictive ability of the following three models:
 
 1)	One of the four simple forecasting methods (average, naïve, seasonal naïve, or drift)
