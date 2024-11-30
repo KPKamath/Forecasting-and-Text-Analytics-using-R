@@ -8,24 +8,24 @@ Before proceeding to test the forecasting abilities of the models it is essentia
 
    <img width="640" alt="image" src="https://github.com/user-attachments/assets/a0d584e7-b517-4ac1-a92f-38b7137de4f4">
 
-Figure 1.1: Plot of data time series
+                          Figure 1.1: Plot of data time series
 
 
 Although it is already known that the data is seasonally adjusted and from Figure1.1 it can be observed that the data has a clear trend, a check for seasonality is conducted to ensure the same. From the Figure 1.2 shown below it is confirmed that there is no seasonality in the dataset.
 
 <img width="717" alt="image" src="https://github.com/user-attachments/assets/4d713c35-22a4-4d77-91b2-60fa82e91df0">
  
-Figure 1.2: Seasonal plot of the data
+                       Figure 1.2: Seasonal plot of the data
 
  <img width="716" alt="image" src="https://github.com/user-attachments/assets/8c3e3be6-c312-4e79-9c32-a0a91272c7f1">
 
-Figure 1.3: Residuals plot
+                            Figure 1.3: Residuals plot
 
 From the residuals plot above we can see that the data exhibits a clear trend as the ACF plot decreases exponentially. Additive decomposition is performed to analyse if there is any anomaly or irregularity in the data to ensure better forecasting. From the figure below it is observed that there are no irregularities in the data and the seasonal component is constant.
 
  <img width="722" alt="image" src="https://github.com/user-attachments/assets/c134cfc7-9c26-4461-b425-ac7d1f8f3e2a">
 
-Figure 1.4: Additive decomposition plot
+                    Figure 1.4: Additive decomposition plot
 
 Now that it is clearly established that there is no seasonality, irregularity or missing values, the data can be split into train set and test set. This split is essential because it assists in evaluating the predictive ability of the model. The model is trained on the data using the train set and the test set is used to assess the performance of the model on the unseen data. This assures that the model is analysing the patterns rather than just memorizing and it can now be used to forecast the new data. For the purpose of this analysis the time series of the data is split as 80% (i.e 623 data points) for the train set and 20% (i.e 156 data points) for the test set.
 Once the test and the train split is established the next step is to test the predictive ability of the models. Naive model, is the simplest among the four simple forecasting models. This model predicts the future values entirely on the basis of most recently observed value of the time series completely ignoring the other data points. Naive forecast method basically assumes that the projected value will be same as the recently observed value of the time series. After training the naive model on the train set, summary as shown in Figure 1.4 suggests that mean error (ME) is a positive value indicating that the forecasted values are slightly greater than the actual value. Root mean square error (RMSE) is observed to be 29.69 and mean absolute error (MAE) which corresponds to the deviation of the predicted values from the actual value, is observed to have a value of 19.89. Figure 1.6 shows the plot for the forecast using the train set in naive method.
