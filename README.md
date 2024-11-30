@@ -5,7 +5,8 @@ The given data contains information about the monthly personal consumption expen
 •	Using one step ahead rolling forecasting without re-estimation to compare the three models.
 Before proceeding to test the forecasting abilities of the models it is essential to perform the data preparation steps. This is started by installing and loading necessary libraries, and the dataset into R. To test the forecasting models the input needs to be a structured sequence where each data point is associated with particular time. Hence, data is converted into time series with frequency equal to 12 since the data has monthly records. Once the data is converted to time series, a check for missing data is conducted as it is important to handle the missing data to have a reliable forecasting model. It is found that there are 779 data points, 43 out of which are missing values in the dataset. Imputation is carried out using the interpolation function to address the missing data. Interpolation function performs a linear interpolation by replacing the missing value with the mean of the data values before and after it. 
 
- <img width="640" alt="image" src="https://github.com/user-attachments/assets/a0d584e7-b517-4ac1-a92f-38b7137de4f4">
+
+   <img width="640" alt="image" src="https://github.com/user-attachments/assets/a0d584e7-b517-4ac1-a92f-38b7137de4f4">
 
 Figure 1.1: Plot of data time series
 
