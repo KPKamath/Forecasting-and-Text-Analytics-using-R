@@ -10,6 +10,7 @@ Before proceeding to test the forecasting abilities of the models it is essentia
 
 Figure 1.1: Plot of data time series
 
+
 Although it is already known that the data is seasonally adjusted and from Figure1.1 it can be observed that the data has a clear trend, a check for seasonality is conducted to ensure the same. From the Figure 1.2 shown below it is confirmed that there is no seasonality in the dataset.
 
 <img width="717" alt="image" src="https://github.com/user-attachments/assets/4d713c35-22a4-4d77-91b2-60fa82e91df0">
