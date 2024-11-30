@@ -8,6 +8,7 @@ Before proceeding to test the forecasting abilities of the models it is essentia
  <img width="640" alt="image" src="https://github.com/user-attachments/assets/a0d584e7-b517-4ac1-a92f-38b7137de4f4">
 
 Figure 1.1: Plot of data time series
+
 Although it is already known that the data is seasonally adjusted and from Figure1.1 it can be observed that the data has a clear trend, a check for seasonality is conducted to ensure the same. From the Figure 1.2 shown below it is confirmed that there is no seasonality in the dataset.
 
 <img width="717" alt="image" src="https://github.com/user-attachments/assets/4d713c35-22a4-4d77-91b2-60fa82e91df0">
@@ -17,6 +18,7 @@ Figure 1.2: Seasonal plot of the data
  <img width="716" alt="image" src="https://github.com/user-attachments/assets/8c3e3be6-c312-4e79-9c32-a0a91272c7f1">
 
 Figure 1.3: Residuals plot
+
 From the residuals plot above we can see that the data exhibits a clear trend as the ACF plot decreases exponentially. Additive decomposition is performed to analyse if there is any anomaly or irregularity in the data to ensure better forecasting. From the figure below it is observed that there are no irregularities in the data and the seasonal component is constant.
 
  <img width="722" alt="image" src="https://github.com/user-attachments/assets/c134cfc7-9c26-4461-b425-ac7d1f8f3e2a">
@@ -33,6 +35,7 @@ Figure 1.5: Summary of naive model
  <img width="739" alt="image" src="https://github.com/user-attachments/assets/82a67a9d-926e-4cee-8cd1-d112b89ddb4f">
 
 Figure 1.6: Naive forecast plot
+
 In exponential smoothing, the model allocates exponentially reducing weights to past values in which the most recent value gets the highest weightage implying that the recent observation will have a greater impact on the forecast. Exponential smoothing does not account for trend and seasonality in the data and since PCE has the trend component but no seasonality, Holt’s method is most appropriate type of exponential smoothing that can be used. Figure 1.7 shows the plot for the forecast using the train set in Holt’s method.
 
  <img width="739" alt="image" src="https://github.com/user-attachments/assets/12f6654c-6a0d-4a2b-9ea4-5b058ec6987d">
@@ -55,6 +58,7 @@ Figure 1.9: Result of ARIMA model residuals check
 <img width="617" alt="image" src="https://github.com/user-attachments/assets/9b7c10eb-a981-49ae-addb-e8c6e71faac3">
 
 Figure 1.10: ARIMA model forecast plot
+
 The ARIMA model chosen by the auto arima function has 3 autoregressive, 2 differencing and 2 moving average components. From Figure 1.8 it can be said that there is not enough evidence to reject the null hypothesis as the p-value is greater that 0.05. This implies that the residuals of ARIMA(3,2,2) do not have significant autocorrelation. Figure 1.10 shows the plot for the forecast using auto ARIMA function that employs the train set in the model. 
 Checking the accuracy of all three models using the test and train set, the predictive ability of each model can be evaluated. For the model to be a good fit, error measures have to be considerably less.
 
@@ -92,6 +96,7 @@ Wordcloud can be used to derive insights on frequently encountered words in the 
  <img width="405" alt="image" src="https://github.com/user-attachments/assets/55d6fcb1-5739-499a-b78b-9351d907af4e">
 
 Figure 2.1: Wordcloud for positive reviews
+
 Figure 2.2 shows the wordcloud for negative reviews and it can be noticed that hotel, room, staff, stay are prominent.
  
  <img width="405" alt="image" src="https://github.com/user-attachments/assets/b64b5774-a9c5-47d4-bb51-3661f072bba5">
@@ -114,6 +119,7 @@ Figure 2.4: Plot of the metrics to find the number of topics for negative review
 <img width="877" alt="image" src="https://github.com/user-attachments/assets/d158d0bf-b975-40de-952d-1d5cc87c6430">
 
 Figure 2.5: Topics for positive reviews
+
 Figure 2.5 shows the 18 topics and 10 most frequently occurring words under each topic for positive reviews. The themes for these topics are identified and the topics are labeled accordingly. The labels for 18 topics from the positive reviews are given in the table below.
 
 Topic Number	Label
@@ -179,5 +185,6 @@ From the figure above it can be observed that the top three topics that lead to 
 <img width="977" alt="image" src="https://github.com/user-attachments/assets/7423fb1b-5030-48a0-a251-c5025607dfb3">
 
 Figure 2.10: Probability of occurrence of topics for negative reviews
+
 From the figure above it can be observed that the top three topics that lead to customer dissatisfaction are topic 18, 14 and 12. From Table 2 it can be inferred that dissatisfaction stems from accessibility of the hotel, customer’s arrival experience at the hotel and overall experience with the hotel offers respectively.
 By the means of text analysis and using topic modelling on the data containing online reviews provided by the customers, insights can be drawn on the factors influencing the satisfaction or dissatisfaction. By working on factors like customer arrival experience and improving other services offered, the dissatisfaction of the customers can be reduced. Maintaining good staff service can further enhance the overall experience of the customer.
