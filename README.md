@@ -1,6 +1,6 @@
-#PCE-Prediction
+# PCE-Prediction
 
-##Part 1: Forecasting US Personal Consumption Expenditures
+## Part 1: Forecasting US Personal Consumption Expenditures
 
 The goal is to compare three forecasting models to identify the best-performing one for predicting US seasonally-adjusted personal consumption expenditures (PCE):
 
@@ -10,52 +10,52 @@ Exponential Smoothing Model - Holt's method was used
 
 ARIMA Model
 
-###Steps Involved
+### Steps Involved
 
-####Data Preprocessing:
+#### Data Preprocessing:
 
 Handle missing data and split the dataset into training and test sets.
 
-####Model Development and Evaluation:
+#### Model Development and Evaluation:
 
 Train and evaluate all three models using performance metrics like MAE, RMSE, or MAPE.
 
 Visualize predictions vs. actual values for all models in one graph.
 
-####Future Estimation:
+#### Future Estimation:
 
 Predict PCE for October 2024 using the best-performing model.
 
-####Rolling Forecast Comparison:
+#### Rolling Forecast Comparison:
 
 Perform one-step-ahead rolling forecasts without re-estimating parameters and compare models.
 
-##Part 2: Topic Modeling on Hotel Reviews
+## Part 2: Topic Modeling on Hotel Reviews
 
 Analyze 2,000 hotel reviews to extract topics discussed in positive and negative reviews, based on customer ratings (Likert scale 1–5).
 
-###Steps Involved
+### Steps Involved
 
-####Sampling:
+#### Sampling:
 
 Used set.seed() and sample_n() to select 2,000 random reviews for reproducibility.
 
-####Classify Reviews:
+#### Classify Reviews:
 
 Positive Reviews: Ratings of 4 and 5.
 
 Negative Reviews: Ratings of 1 and 3.
 
-####Text Preprocessing:
+#### Text Preprocessing:
 
 Tokenization, stop word removal, stemming/lemmatization, and other cleaning steps.
 
-####Topic Modeling:
+#### Topic Modeling:
 
 Use Latent Dirichlet Allocation (LDA) to identify key topics.
 
 Select the number of topics based on coherence scores or similar criteria.
 
-####Interpret Results:
+#### Interpret Results:
 
 Label topics and discuss the top three factors affecting customer satisfaction and dissatisfaction.
