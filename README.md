@@ -32,13 +32,13 @@ Perform one-step-ahead rolling forecasts without re-estimating parameters and co
 
 ## Part 2: Topic Modeling on Hotel Reviews
 
-Analyze 2,000 hotel reviews to extract topics discussed in positive and negative reviews, based on customer ratings (Likert scale 1–5).
+Analyze 10,000 hotel reviews to extract topics discussed in positive and negative reviews, based on customer ratings (Likert scale 1–5).
 
 ### Steps Involved
 
 #### Sampling:
 
-Used set.seed() and sample_n() to select 2,000 random reviews for reproducibility.
+Used set.seed() to select random reviews for reproducibility.
 
 #### Classify Reviews:
 
@@ -49,6 +49,10 @@ Negative Reviews: Ratings of 1 and 3.
 #### Text Preprocessing:
 
 Tokenization, stop word removal, stemming/lemmatization, and other cleaning steps.
+
+### Sentiment Analysis:
+
+A sentiment analysis was performed using the 'bing' lexicon. The sentiment analysis assigned positive and negative scores to words in each review, allowing to calculate an overall sentiment score for each review.
 
 #### Topic Modeling:
 
