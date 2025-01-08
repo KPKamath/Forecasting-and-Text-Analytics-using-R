@@ -50,7 +50,7 @@ Negative Reviews: Ratings of 1 and 3.
 
 Tokenization, stop word removal, stemming/lemmatization, and other cleaning steps.
 
-### Sentiment Analysis:
+#### Sentiment Analysis:
 
 A sentiment analysis was performed using the 'bing' lexicon. The sentiment analysis assigned positive and negative scores to words in each review, allowing to calculate an overall sentiment score for each review.
 
