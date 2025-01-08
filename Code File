@@ -199,7 +199,31 @@ rev_english <- data %>%
 
 colnames(rev_english)
 
-test <- sample_n(rev_english,2000)
+test <- test %>% mutate(review_id = row_number())
+
+tokens <- test %>%
+  unnest_tokens(word, Text.1) %>%
+  select(review_id, word)
+
+#SENTIMENT ANALYSIS 
+bing_sentiment <- tokens %>%
+  inner_join(get_sentiments("bing"), by = "word") %>%
+  count(sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment_score = positive - negative)
+
+print(bing_sentiment)
+
+review_sentiment <- tokens %>%
+  inner_join(get_sentiments("bing"), by = "word") %>%
+  group_by(review_id) %>%
+  summarize(sentiment_score = sum(ifelse(sentiment == "positive", 1, -1)))
+
+test <- test %>%
+  left_join(review_sentiment, by = "review_id")
+
+print(head(test))
+
 
 #Split into positive and negative reviews
 
